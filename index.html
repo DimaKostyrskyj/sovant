@@ -96,18 +96,17 @@
       height: 100vh; min-height: 680px;
       display: flex; flex-direction: column;
       justify-content: flex-end;
-      overflow: hidden;
     }
 
-    /* THE CAR — fills the entire hero */
+    /* THE CAR — fixed to viewport, always visible behind everything */
     .hero-car {
-      position: absolute; inset: 0; z-index: 1;
+      position: fixed; inset: 0; z-index: 0;
       background: url('/images/bmv.jpg') center center / cover no-repeat;
     }
 
-    /* Dark gradient from bottom so text is readable */
+    /* Gradient overlay — also fixed */
     .hero-overlay {
-      position: absolute; inset: 0; z-index: 2;
+      position: fixed; inset: 0; z-index: 1;
       background:
         linear-gradient(to top,
           rgba(10,10,8,0.72) 0%,
@@ -196,7 +195,7 @@
 
     /* Bottom counter */
     .hero-counter {
-      position: absolute; bottom: 24px; left: 52px; z-index: 4;
+      position: absolute; bottom: 24px; left: 52px; z-index: 5;
       font-size: 0.65rem; letter-spacing: 0.12em;
       color: rgba(245,243,239,0.4);
     }
@@ -228,7 +227,7 @@
     }
 
     /* ── SERVICES ── */
-    .services { background: var(--bg2); border-top: 1px solid var(--border2); }
+    .services { background: var(--bg2); border-top: 1px solid var(--border2); position: relative; z-index: 10; }
 
     .svc-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
@@ -257,7 +256,7 @@
     }
 
     /* ── PRICING ── */
-    .pricing { background: var(--bg); border-top: 1px solid var(--border2); }
+    .pricing { background: var(--bg); border-top: 1px solid var(--border2); position: relative; z-index: 10; }
     .pricing-wrap { display: grid; grid-template-columns: 300px 1fr; gap: 80px; }
     .pricing-side { position: sticky; top: 96px; align-self: start; }
     .pricing-cta {
@@ -292,7 +291,7 @@
     }
 
     /* ── GALLERY ── */
-    .gallery { background: var(--bg2); border-top: 1px solid var(--border2); }
+    .gallery { background: var(--bg2); border-top: 1px solid var(--border2); position: relative; z-index: 10; }
     .gal-grid {
       margin-top: 48px; display: grid;
       grid-template-columns: 2fr 1fr 1fr;
@@ -309,7 +308,7 @@
     .g-ph-t { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); }
 
     /* ── CONTACT ── */
-    .contact { background: var(--bg); border-top: 1px solid var(--border2); }
+    .contact { background: var(--bg); border-top: 1px solid var(--border2); position: relative; z-index: 10; }
     .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
 
     .info-list { margin-top: 36px; }
@@ -371,7 +370,7 @@
     .form-submit:hover { opacity: 0.72; }
 
     /* ── MAP ── */
-    .map-wrap { height: 340px; position: relative; border-top: 1px solid var(--border2); }
+    .map-wrap { height: 340px; position: relative; border-top: 1px solid var(--border2); z-index: 10; background: var(--bg); }
     .map-wrap iframe { width: 100%; height: 100%; border: 0; filter: grayscale(1) contrast(0.85) brightness(1.05); }
     .map-tag {
       position: absolute; top: 20px; left: 20px; z-index: 10;
@@ -389,6 +388,7 @@
       background: var(--dark); padding: 30px 52px;
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 14px;
+      position: relative; z-index: 10;
     }
     .f-logo {
       font-family: 'Syne', sans-serif; font-size: 0.82rem;
@@ -568,7 +568,7 @@
       <div class="info-list rv">
         <div class="irow"><span class="irow-label">Adres</span><span class="irow-val">ul. Dębogórska 62<br>84-230 Rumia</span></div>
         <div class="irow"><span class="irow-label">Telefon</span><span class="irow-val"><a href="tel:+48000000000">+48 000 000 000</a></span></div>
-        <div class="irow"><span class="irow-label">Email</span><span class="irow-val"><a href="mailto:kontakt@autodetailrumia.pl">kontakt@autodetailrumia.pl</a></span></div>
+        <div class="irow"><span class="irow-label">Email</span><span class="irow-val"><a href="/cdn-cgi/l/email-protection#046f6b6a70656f70446571706b606170656d687671696d652a7468"><span class="__cf_email__" data-cfemail="214a4e4f55404a55614054554e45445540484d53544c48400f514d">[email&#160;protected]</span></a></span></div>
         <div class="irow">
           <span class="irow-label">Godziny</span>
           <span class="irow-val">
@@ -625,7 +625,7 @@
 
 <a class="float-call" href="tel:+48000000000">📞 Zadzwoń</a>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 60);
@@ -635,12 +635,4 @@
     el.style.transitionDelay = `${i * 55}ms`;
   });
 
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.rv').forEach(el => io.observe(el));
-</script>
-</body>
-</html>
+  const io = new IntersectionObser
