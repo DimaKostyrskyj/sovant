@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>@sovant</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23080808'/><text x='16' y='22' font-family='monospace' font-size='16' font-weight='bold' text-anchor='middle' fill='white'>s</text><circle cx='24' cy='8' r='4' fill='%2343b581'/></svg>">
+<link rel="icon" type="image/x-icon" href="assets/logo.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -116,29 +116,22 @@ body {
 .ui-btn:hover { border-color: rgba(255,255,255,0.2); }
 .ui-btn svg { width: 18px; height: 18px; }
 
-/* ── VIEWS ── */
-.views-badge {
-  position: fixed; bottom: 14px; left: 16px; z-index: 100;
-  display: flex; align-items: center; gap: 5px;
-  font-size: 13px; font-weight: 550; color: rgba(255,255,255,0.6);
-}
-.views-badge svg { width: 16px; height: 16px; }
-
 /* ── SCROLL WRAPPER ── */
 .scroll-page {
   position: relative; z-index: 10;
   padding: 60px 16px 80px;
   display: flex; flex-direction: column; align-items: center; gap: 14px;
+  min-height: 100vh;
 }
 
 /* ── CARD BASE ── */
 .card {
-  width: 100%; max-width: 40rem;
+  width: 100%; max-width: 28rem;
   background: rgba(8,8,8,0.75);
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 20px;
   backdrop-filter: blur(24px);
-  padding: 28px 20px;
+  padding: 24px 18px;
   animation: fadeUp 0.5s ease forwards;
   opacity: 0;
 }
@@ -324,12 +317,6 @@ body {
   border: 1px solid rgba(255,255,255,0.1); font-family: 'Onest', sans-serif;
 }
 .s-btn:hover::after { opacity: 1; }
-
-.p-views {
-  margin-top: 14px; font-size: 13px; color: var(--text-dim);
-  display: flex; align-items: center; gap: 4px;
-}
-.p-views svg { width: 15px; height: 15px; }
 
 /* ══════════════════════════════
    CARD 2 — ABOUT ME
@@ -546,11 +533,6 @@ body {
   </div>
 </div>
 
-<div class="views-badge">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
-  2
-</div>
-
 <!-- ════════ PAGE CONTENT ════════ -->
 <div class="scroll-page">
 
@@ -646,11 +628,6 @@ body {
       <a class="s-btn" href="https://www.faceit.com/ru/players/KaiSatto" target="_blank" data-tip="FACEIT" style="border-color:rgba(244,110,49,0.25)">
         <img src="https://r2.guns.lol/90d4ed5a-f14d-4876-8505-9a8c2cd61e7c.webp" alt="faceit">
       </a>
-    </div>
-
-    <div class="p-views">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
-      2
     </div>
   </div>
 
@@ -789,9 +766,9 @@ body {
       <div class="term-line comment" style="animation-delay:.1s">// sovant — developer profile</div>
       <div class="term-line" style="animation-delay:.3s"><span class="tag">{</span></div>
       <div class="term-line" style="animation-delay:.5s;padding-left:16px"><span class="key">"age"</span><span class="tag">: </span><span class="num">20</span><span class="tag">,</span></div>
-      <div class="term-line" style="animation-delay:.7s;padding-left:16px"><span class="key">"location"</span><span class="tag">: </span><span class="str">"Poland, Warsaw"</span><span class="tag">,</span></div>
+      <div class="term-line" style="animation-delay:.7s;padding-left:16px"><span class="key">"location"</span><span class="tag">: </span><span class="str">"Poland"</span><span class="tag">,</span></div>
       <div class="term-line" style="animation-delay:.9s;padding-left:16px"><span class="key">"languages"</span><span class="tag">: [</span><span class="str">"JavaScript"</span><span class="tag">, </span><span class="str">"Python"</span><span class="tag">, </span><span class="str">"Go"</span><span class="tag">],</span></div>
-      <div class="term-line" style="animation-delay:1.1s;padding-left:16px"><span class="key">"projects"</span><span class="tag">: [</span><span class="str">"BadgRules"</span><span class="tag">, </span><span class="str">"NEXUS"</span><span class="tag">, </span><span class="str">"Ocean Bot"</span><span class="tag">],</span></div>
+      <div class="term-line" style="animation-delay:1.1s;padding-left:16px"><span class="key">"projects"</span><span class="tag">: [</span><span class="str">"BadgRules"</span><span class="tag">, </span><span class="str">"NEXUS"</span><span class="tag">, </span></div>
       <div class="term-line" style="animation-delay:1.3s;padding-left:16px"><span class="key">"faceit"</span><span class="tag">: </span><span class="str">"KaiSatto"</span><span class="tag">,</span></div>
       <div class="term-line" style="animation-delay:1.5s;padding-left:16px"><span class="key">"open_to_collab"</span><span class="tag">: </span><span class="bool">true</span></div>
       <div class="term-line" style="animation-delay:1.7s"><span class="tag">}</span></div>
