@@ -417,6 +417,52 @@ body {
 .proj-status.wip { background: #febc2e; box-shadow: 0 0 6px rgba(254,188,46,0.5); }
 .proj-status.archived { background: #444; box-shadow: none; }
 
+/* ── BG SWITCHER ── */
+.bg-switcher {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bg-switcher.left  { left: 12px; }
+.bg-switcher.right { right: 12px; }
+
+.bg-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.10);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+  background: rgba(10,10,10,0.55);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.bg-thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+  border-radius: 8px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.bg-thumb:hover { border-color: rgba(255,255,255,0.35); transform: scale(1.08); }
+.bg-thumb:hover img { opacity: 1; }
+.bg-thumb.active { border-color: rgba(255,255,255,0.5); }
+.bg-thumb.active img { opacity: 1; }
+.bg-thumb .bg-icon {
+  color: rgba(255,255,255,0.5);
+  display: flex; align-items: center; justify-content: center;
+}
+.bg-thumb .bg-icon svg { width: 16px; height: 16px; }
+
+@media (max-width: 520px) {
+  .bg-switcher { display: none; }
+}
+
 </style>
 </head>
 <body>
@@ -439,10 +485,11 @@ body {
   <div class="ui-btn" id="volBtn" title="Video sound">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="volIcon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
   </div>
-  <div class="ui-btn" id="skipBtn" title="Skip track">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18V6h2v5.5l8.5-5.5v12l-8.5-5.5V18H6z"/></svg>
-  </div>
 </div>
+
+<!-- BG SWITCHERS -->
+<div class="bg-switcher left" id="bgLeft"></div>
+<div class="bg-switcher right" id="bgRight"></div>
 
 <!-- ════════ PAGE CONTENT ════════ -->
 <div class="scroll-page">
@@ -672,7 +719,7 @@ document.getElementById('playBtn').addEventListener('click',()=>{
 });
 document.getElementById('prevBtn').addEventListener('click',()=>loadTrack(cur-1,true));
 document.getElementById('nextBtn').addEventListener('click',()=>loadTrack(cur+1,true));
-document.getElementById('skipBtn').addEventListener('click',()=>loadTrack(cur+1,true));
+
 audio.addEventListener('ended',()=>loadTrack(cur+1,true));
 audio.addEventListener('timeupdate',()=>{ if(audio.duration) progFill.style.width=(audio.currentTime/audio.duration*100)+'%'; });
 progBar.addEventListener('click',e=>{ const r=progBar.getBoundingClientRect(); if(audio.duration) audio.currentTime=(e.clientX-r.left)/r.width*audio.duration; });
@@ -735,6 +782,67 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft') lbPrev.click();
   if(e.key==='ArrowRight') lbNext.click();
 });
+
+/* ══ BG SWITCHER ══ */
+const BG_LIST = [
+  { type: 'video', src: 'assets/bg.mp4',  thumb: 'assets/bg1.jpg',  fallback: 'https://assets.mixkit.co/videos/preview/mixkit-driving-on-a-highway-at-night-38596-large.mp4' },
+  { type: 'video', src: 'assets/bg2.mp4', thumb: 'assets/bg2.jpg',  fallback: 'https://assets.mixkit.co/videos/preview/mixkit-city-traffic-at-night-342-large.mp4' },
+  { type: 'video', src: 'assets/bg3.mp4', thumb: 'assets/bg3.jpg',  fallback: 'https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-city-traffic-at-night-11-large.mp4' },
+  { type: 'video', src: 'assets/bg4.mp4', thumb: 'assets/bg4.jpg',  fallback: 'https://assets.mixkit.co/videos/preview/mixkit-rain-on-a-street-at-night-4544-large.mp4' },
+  { type: 'image', src: 'assets/bg5.jpg', thumb: 'assets/bg5.jpg',  fallback: '' },
+  { type: 'image', src: 'assets/bg6.jpg', thumb: 'assets/bg6.jpg',  fallback: '' },
+];
+let activeBgIdx = 0;
+
+function buildBgThumbs() {
+  const left  = document.getElementById('bgLeft');
+  const right = document.getElementById('bgRight');
+  const mid   = Math.ceil(BG_LIST.length / 2);
+  BG_LIST.forEach((bg, i) => {
+    const btn = document.createElement('div');
+    btn.className = 'bg-thumb' + (i === 0 ? ' active' : '');
+    btn.title = 'Фон ' + (i + 1);
+    btn.dataset.idx = i;
+    const img = document.createElement('img');
+    img.src = bg.thumb;
+    img.alt = 'bg' + (i + 1);
+    img.onerror = () => {
+      img.style.display = 'none';
+      const ic = document.createElement('div');
+      ic.className = 'bg-icon';
+      ic.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zm-5-7-3 3.72-2-2.43L8 17h8z" opacity=".6"/></svg>';
+      btn.appendChild(ic);
+    };
+    btn.appendChild(img);
+    btn.addEventListener('click', () => switchBg(i));
+    if (i < mid) left.appendChild(btn);
+    else         right.appendChild(btn);
+  });
+}
+
+function switchBg(idx) {
+  if (idx === activeBgIdx) return;
+  activeBgIdx = idx;
+  const bg = BG_LIST[idx];
+  document.querySelectorAll('.bg-thumb').forEach(el => {
+    el.classList.toggle('active', parseInt(el.dataset.idx) === idx);
+  });
+  if (bg.type === 'video') {
+    bgVideo.style.display = '';
+    document.body.style.backgroundImage = 'none';
+    bgVideo.src = bg.src;
+    bgVideo.onerror = () => { bgVideo.src = bg.fallback; };
+    bgVideo.load();
+    bgVideo.play().catch(() => {});
+  } else {
+    bgVideo.pause();
+    bgVideo.style.display = 'none';
+    document.body.style.backgroundImage = `url('${bg.src}')`;
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+  }
+}
+buildBgThumbs();
 
 /* ══ ANIMATED TITLE ══ */
 const titles=['@sovant','sovant_','sov4nt','@sovant'];
